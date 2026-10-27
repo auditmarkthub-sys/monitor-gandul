@@ -1,0 +1,86 @@
+[
+ {
+  "id": "us-goya-wm",
+  "mercado": "EE. UU. continental",
+  "marca": "Goya",
+  "tienda": "Walmart",
+  "contenido_g": 425,
+  "precio_local": 2.23,
+  "moneda": "USD",
+  "consultado": "2026-10-26",
+  "estado": "Disponible",
+  "fuente": "https://www.walmart.com/ip/34108331"
+ },
+ {
+  "id": "us-goya-heb",
+  "mercado": "EE. UU. continental",
+  "marca": "Goya",
+  "tienda": "H-E-B",
+  "contenido_g": 425,
+  "precio_local": 1.97,
+  "moneda": "USD",
+  "consultado": "2026-10-26",
+  "estado": "Disponible",
+  "fuente": "https://www.heb.com/product-detail/goya-green-pigeon-peas/129189"
+ },
+ {
+  "id": "us-goya-coco",
+  "mercado": "EE. UU. continental",
+  "marca": "Goya con coco",
+  "tienda": "Walmart",
+  "contenido_g": 439,
+  "precio_local": 4.05,
+  "moneda": "USD",
+  "consultado": "2026-10-26",
+  "estado": "Disponible",
+  "fuente": "https://www.walmart.com/ip/Premium-Green-Pigeon-Peas-Pack-of-20/352063726"
+ },
+ {
+  "id": "us-iberia",
+  "mercado": "EE. UU. continental",
+  "marca": "Iberia",
+  "tienda": "Walmart",
+  "contenido_g": 425,
+  "precio_local": 3.76,
+  "moneda": "USD",
+  "consultado": "2026-10-16",
+  "estado": "Sin precio nuevo",
+  "fuente": "https://walmart.com/ip/seort/34108331"
+ },
+ {
+  "id": "us-goya-prime",
+  "mercado": "EE. UU. continental",
+  "marca": "Goya Prime",
+  "tienda": "Walmart",
+  "contenido_g": 425,
+  "precio_local": 4.81,
+  "moneda": "USD",
+  "consultado": "2026-10-26",
+  "estado": "Agotado",
+  "fuente": "https://www.walmart.com/ip/151064185"
+ },
+ {
+  "id": "ae-seaisle",
+  "mercado": "Emiratos Árabes",
+  "marca": "Sea Isle",
+  "tienda": "Carrefour UAE",
+  "contenido_g": 425,
+  "precio_local": 8.6,
+  "moneda": "AED",
+  "consultado": "2026-10-16",
+  "estado": "Sin precio nuevo",
+  "fuente": "https://www.carrefouruae.com/mafuae/en/root-maf-category/food-navigation-category/food-cupboard/tins-jars-packets/canned-vegetables/other-vegetables/sea-isle-canned-pigeon-peas-425g/p/1601692"
+ },
+ {
+  "id": "ae-goya",
+  "mercado": "Emiratos Árabes",
+  "marca": "Goya",
+  "tienda": "Amazon.ae",
+  "contenido_g": 425,
+  "precio_local": 7.12,
+  "moneda": "AED",
+  "consultado": "2026-10-16",
+  "estado": "Sin precio nuevo",
+  "fuente": "https://www.amazon.ae/pigeon-peas/s?k=pigeon+peas"
+ }
+]

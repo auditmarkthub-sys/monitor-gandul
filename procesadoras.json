@@ -1,0 +1,38 @@
+[
+ {
+  "empresa": "Procesadora Perú SAC",
+  "zona": "Lambayeque · sale por Paita",
+  "clientes": "Goya Florida, Goya Santo Domingo, Goya en España",
+  "producto": "Gandul verde en conserva y congelado"
+ },
+ {
+  "empresa": "Servicios Procesadora Perú SAC",
+  "zona": "Norte del Perú",
+  "clientes": "Goya Texas y California",
+  "producto": "Gandul verde en conserva, marca Goya"
+ },
+ {
+  "empresa": "Gandules Inc SAC",
+  "zona": "Lambayeque",
+  "clientes": "Más de 50 destinos",
+  "producto": "Conservas, congelados; certificación Halal y Kosher"
+ },
+ {
+  "empresa": "Alpes Chiclayo SAC",
+  "zona": "Chiclayo",
+  "clientes": "EE. UU., Canadá, Panamá, Caribe",
+  "producto": "Gandul en conserva; temporada mayo–diciembre"
+ },
+ {
+  "empresa": "V & F SAC",
+  "zona": "Norte del Perú",
+  "clientes": "José Santiago Inc. (Puerto Rico), Best Wholesale Grocers",
+  "producto": "Gandul verde en agua y sal"
+ },
+ {
+  "empresa": "Natural Source Perú SAC",
+  "zona": "Sale por Paita",
+  "clientes": "Supervalue Food Stores (vía Miami)",
+  "producto": "Gandul en salmuera, con leche de coco y seco"
+ }
+]

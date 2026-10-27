@@ -1,0 +1,72 @@
+[
+ {
+  "clave": "precio_chacra",
+  "valor": 0.7,
+  "unidad": "S/ por kg de vaina",
+  "nota": "Tu primera venta (cosecha de Jayanca)",
+  "fuente": "Dato tuyo"
+ },
+ {
+  "clave": "tc_pen_usd",
+  "valor": 3.451,
+  "unidad": "S/ por US$",
+  "nota": "Referencia SUNAT, venta, 25-oct-2026",
+  "fuente": "https://chequea.pe/tipo-de-cambio-sunat/2026/octubre/"
+ },
+ {
+  "clave": "aed_usd",
+  "valor": 3.6725,
+  "unidad": "AED por US$",
+  "nota": "Dírham anclado al dólar",
+  "fuente": "Banco Central de EAU (paridad fija)"
+ },
+ {
+  "clave": "lata_neto_kg",
+  "valor": 0.425,
+  "unidad": "kg por lata de 15 oz",
+  "nota": "Peso neto de una lata estándar",
+  "fuente": "Conversión 15 oz"
+ },
+ {
+  "clave": "escurrido_kg",
+  "valor": 0.255,
+  "unidad": "kg de grano por lata",
+  "nota": "Supuesto: ~60% del neto es grano; el resto, salmuera",
+  "fuente": "Estimación propia, a validar con la conservera"
+ },
+ {
+  "clave": "rend_grano",
+  "valor": 0.45,
+  "unidad": "kg grano / kg vaina",
+  "nota": "Supuesto: 4–5 t/ha de grano verde frente a ~10 t/ha de vaina",
+  "fuente": "https://www.eumed.net/libros-gratis/2007a/261/7.htm"
+ },
+ {
+  "clave": "flete_20ft_min",
+  "valor": 1400,
+  "unidad": "US$ por contenedor 20'",
+  "nota": "Referencia Santos→Miami (ruta comparable a Paita→Florida)",
+  "fuente": "https://suaidglobal.com/es/insights/fcl-container-rates-2026/"
+ },
+ {
+  "clave": "flete_20ft_max",
+  "valor": 2200,
+  "unidad": "US$ por contenedor 20'",
+  "nota": "Referencia Santos→Miami",
+  "fuente": "https://suaidglobal.com/es/insights/fcl-container-rates-2026/"
+ },
+ {
+  "clave": "kg_por_caja",
+  "valor": 12.12,
+  "unidad": "kg brutos por caja de 24 latas",
+  "nota": "Embarque Procesadora Perú→Goya, jul-2026 (64 011 kg / 5280 cajas)",
+  "fuente": "https://www.seair.co.in/us-import/product-pigeon-peas.aspx"
+ },
+ {
+  "clave": "carga_20ft_kg",
+  "valor": 20000,
+  "unidad": "kg por contenedor 20'",
+  "nota": "Supuesto de carga útil",
+  "fuente": "Estimación propia"
+ }
+]

@@ -1,0 +1,62 @@
+[
+ {
+  "empresa": "Procesadora Perú S.A.C.",
+  "fob_2024_musd": 3.27,
+  "fob_2025_musd": 16.93,
+  "part_2025": 0.2723
+ },
+ {
+  "empresa": "Procesadora Mejía S.A.C.",
+  "fob_2024_musd": 11.36,
+  "fob_2025_musd": 16.92,
+  "part_2025": 0.2721
+ },
+ {
+  "empresa": "V & F SAC",
+  "fob_2024_musd": 8.76,
+  "fob_2025_musd": 11.01,
+  "part_2025": 0.177
+ },
+ {
+  "empresa": "Inka Crops S.A.",
+  "fob_2024_musd": 3.28,
+  "fob_2025_musd": 4.51,
+  "part_2025": 0.0726
+ },
+ {
+  "empresa": "Alpes Chiclayo SAC",
+  "fob_2024_musd": 2.71,
+  "fob_2025_musd": 4.14,
+  "part_2025": 0.0666
+ },
+ {
+  "empresa": "Ecosac Agrícola S.A.C.",
+  "fob_2024_musd": 0.09,
+  "fob_2025_musd": 4.12,
+  "part_2025": 0.0662
+ },
+ {
+  "empresa": "Importadora y Exportadora Doña Isabel S.A.C.",
+  "fob_2024_musd": 0.81,
+  "fob_2025_musd": 0.94,
+  "part_2025": 0.0152
+ },
+ {
+  "empresa": "Agroindustrias AIB S.A.",
+  "fob_2024_musd": 1.5,
+  "fob_2025_musd": 0.8,
+  "part_2025": 0.0128
+ },
+ {
+  "empresa": "Virú S.A.",
+  "fob_2024_musd": 0.0,
+  "fob_2025_musd": 0.73,
+  "part_2025": 0.0117
+ },
+ {
+  "empresa": "Natural Source Perú S.A.C.",
+  "fob_2024_musd": 0.5,
+  "fob_2025_musd": 0.46,
+  "part_2025": 0.0074
+ }
+]

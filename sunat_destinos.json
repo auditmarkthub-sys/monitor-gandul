@@ -1,0 +1,68 @@
+[
+ {
+  "mercado": "Estados Unidos",
+  "fob_2024_musd": 22.3,
+  "fob_2025_musd": 37.63,
+  "part_2025": 0.6052
+ },
+ {
+  "mercado": "República Dominicana",
+  "fob_2024_musd": 10.34,
+  "fob_2025_musd": 9.58,
+  "part_2025": 0.154
+ },
+ {
+  "mercado": "Puerto Rico",
+  "fob_2024_musd": 3.92,
+  "fob_2025_musd": 5.64,
+  "part_2025": 0.0907
+ },
+ {
+  "mercado": "Panamá",
+  "fob_2024_musd": 2.22,
+  "fob_2025_musd": 2.3,
+  "part_2025": 0.037
+ },
+ {
+  "mercado": "España",
+  "fob_2024_musd": 0.29,
+  "fob_2025_musd": 2.19,
+  "part_2025": 0.0353
+ },
+ {
+  "mercado": "Trinidad y Tobago",
+  "fob_2024_musd": 1.32,
+  "fob_2025_musd": 1.99,
+  "part_2025": 0.032
+ },
+ {
+  "mercado": "Chile",
+  "fob_2024_musd": 0.92,
+  "fob_2025_musd": 0.94,
+  "part_2025": 0.015
+ },
+ {
+  "mercado": "Bélgica",
+  "fob_2024_musd": 1.07,
+  "fob_2025_musd": 0.58,
+  "part_2025": 0.0094
+ },
+ {
+  "mercado": "Canadá",
+  "fob_2024_musd": 0.48,
+  "fob_2025_musd": 0.32,
+  "part_2025": 0.0051
+ },
+ {
+  "mercado": "Bahamas",
+  "fob_2024_musd": 0.4,
+  "fob_2025_musd": 0.24,
+  "part_2025": 0.0038
+ },
+ {
+  "mercado": "Otros países",
+  "fob_2024_musd": 0.8,
+  "fob_2025_musd": 0.77,
+  "part_2025": 0.0124
+ }
+]

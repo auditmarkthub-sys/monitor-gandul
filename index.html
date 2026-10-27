@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monitor de gandul en conserva</title>
+<meta name="description" content="Precios de gandul verde en conserva: chacra, FOB Perú, góndola en EE. UU. y Emiratos, y exportaciones SUNAT.">
+<script src="d3.min.js"></script>
+<style>
+:root {
+  --font-anthropic-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-anthropic-serif: Georgia, "Times New Roman", serif;
+  --color-fg: #1f1e1c; --color-fg-muted: #6b675f; --color-bg: #faf9f5; --color-panel: #ffffff;
+  --color-border-line: #e6e3da; --color-ok: #2e7d4f; --color-warn: #b7791f; --color-bad: #c0392b;
+  --cds-chart-muted: #c9c4b8; --cds-surface-popover: #ffffff; --cds-border: #e6e3da;
+  --cds-shadow-popover: 0 4px 16px rgba(0,0,0,.12); --cds-text-secondary: #6b675f;
+  --cds-pad-xs: 4px; --cds-pad-sm: 8px; --cds-pad-lg: 16px;
+  --cds-gap-xs: 4px; --cds-gap-sm: 8px; --cds-gap-md: 16px; --cds-gap-xl: 32px;
+  --cds-radius: 10px; --cds-font-weight-medium: 600; --cds-dur-slow: .3s;
+  --cds-font-size-title: 1.9rem; --cds-font-size-heading: 1.1rem; --cds-font-size-body: 1rem; --cds-font-size-caption: .82rem;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-fg: #ecebe6; --color-fg-muted: #a39e93; --color-bg: #1c1b19; --color-panel: #262522;
+    --color-border-line: #3a3834; --color-ok: #5cbf86; --color-warn: #e0a84a; --color-bad: #e5675a;
+    --cds-chart-muted: #57534b; --cds-surface-popover: #2f2e2a; --cds-border: #3a3834; --cds-text-secondary: #a39e93;
+    color-scheme: dark;
+  }
+}
+body { margin: 0; background: var(--color-bg); color: var(--color-fg); }
+#dash-root { padding: 24px 16px 48px; }
+.dash-skeleton { background: linear-gradient(90deg, transparent, rgba(127,127,127,.12), transparent); background-size: 200% 100%; animation: sk 1.4s infinite; border-radius: 6px; }
+@keyframes sk { from { background-position: 200% 0 } to { background-position: -200% 0 } }
+.gd-pie { max-width: 1200px; margin: 32px auto 0; font-family: var(--font-anthropic-sans); font-size: .82rem; color: var(--color-fg-muted); line-height: 1.6; }
+.gd-pie ul { margin: 4px 0 0; padding-left: 1.1rem; }
+.gd-pie a { color: inherit; }
+</style>
+</head>
+<body>
+<script>
+/* Reemplazo mínimo del runtime del dashboard: carga data/*.json y expone dash.data, dash.onData y dash.calc */
+window.dash = (function () {
+  const IDS = ['supuestos', 'precios_gondola', 'fob_conserva', 'mercados', 'procesadoras', 'sunat_destinos', 'sunat_exportadoras'];
+  const store = {}, calcs = [], fns = [];
+  IDS.forEach(id => store[id] = { status: 'loading', data: [] });
+  const rowsOf = d => Array.isArray(d) ? d : (d.rows || d.data || d.results || []);
+  function compute() {
+    calcs.forEach(c => {
+      const ins = c.inputs.map(i => store[i] || { status: 'missing' });
+      if (ins.every(s => s.status === 'ok')) {
+        try { store[c.id] = { status: 'ok', data: c.fn(...ins.map(s => s.data)) }; }
+        catch (e) { console.error(c.id, e); store[c.id] = { status: 'error', data: [], message: String(e) }; }
+      } else if (ins.some(s => s.status === 'error' || s.status === 'missing')) store[c.id] = { status: 'error', data: [] };
+      else store[c.id] = { status: 'loading', data: [] };
+    });
+  }
+  function run() { compute(); fns.forEach(f => { try { f(); } catch (e) { console.error(e); } }); }
+  Promise.all(IDS.map(id => fetch(id + '.json', { cache: 'no-cache' })
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(d => { store[id] = { status: 'ok', data: rowsOf(d) }; })
+    .catch(e => { console.error(id, e); store[id] = { status: 'error', data: [] }; })))
+    .then(run);
+  let t; window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(run, 150); });
+  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+  return {
+    data: id => store[id] || { status: 'missing', data: [] },
+    onData: fn => { fns.push(fn); compute(); try { fn(); } catch (e) { console.error(e); } },
+    calc: (id, o) => { calcs.push(Object.assign({ id }, o)); },
+    loader: () => {}, refresh: () => {}, params: () => ({}), setParams: () => {}, resetParams: () => {}, setLink: () => {},
+    colors: dark ? ['#6ea8fe', '#f0a35e', '#7fd1a8', '#c49bff', '#f28b9b', '#5fd0dc', '#d9c36a', '#a3a3a3']
+                 : ['#2563c9', '#d9822b', '#2e9466', '#7c4dcc', '#cc4a62', '#1b8fa0', '#a68a1b', '#6b6b6b']
+  };
+})();
+</script>
+<div id="dash-root">
+<style>
+#dash-root { --dash-gutter: var(--cds-pad-lg); }
+.gd { font-family: var(--font-anthropic-sans); color: var(--color-fg); max-width: 1200px; margin-inline: auto; display: flex; flex-direction: column; gap: var(--cds-gap-xl); }
+.gd-head h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0 0 var(--cds-gap-sm); }
+.gd-take { font-size: var(--cds-font-size-body); color: var(--color-fg-muted); margin: 0; line-height: 1.5; }
+.gd-take b, .gd-tile b { font-weight: 600; color: var(--color-fg); }
+.gd-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); gap: var(--cds-gap-md); }
+.gd-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); position: relative; min-width: 0; }
+.gd-tile .lbl { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.gd-tile .num { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); font-variant-numeric: tabular-nums; margin: var(--cds-gap-xs) 0; min-height: 1.3em; }
+.gd-tile .sub { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.gd-sec h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0 0 var(--cds-gap-xs); }
+.gd-sec > p.note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: 0 0 var(--cds-gap-md); }
+.gd-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: var(--cds-gap-md); }
+.gd-card h3 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0 0 var(--cds-gap-xs); }
+.gd-card p.note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: 0 0 var(--cds-gap-md); }
+.gd-chart { min-height: 220px; position: relative; }
+.gd-tbl-wrap { overflow: auto; max-height: 520px; }
+.gd table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+.gd th { text-align: left; font-weight: var(--cds-font-weight-medium); color: var(--color-fg-muted); padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); position: sticky; top: 0; background: var(--color-panel); white-space: nowrap; }
+.gd td { padding: var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); vertical-align: top; line-height: 1.4; }
+.gd td.n, .gd th.n { text-align: right; white-space: nowrap; }
+.gd .pill { display: inline-block; min-width: 1.6em; text-align: center; border-radius: 999px; padding: 0 var(--cds-pad-xs); background: var(--color-bg); border: 1px solid var(--color-border-line); }
+.gd .yes { color: var(--color-ok); } .gd .no { color: var(--color-bad); }
+.gd .tip { position: absolute; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); pointer-events: none; opacity: 0; max-width: 16rem; z-index: 2; }
+.gd .tip .t1 { color: var(--cds-text-secondary); }
+.gd .legend { display: flex; gap: var(--cds-gap-md); flex-wrap: wrap; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-bottom: var(--cds-gap-sm); }
+.gd .legend i { display: inline-block; width: .7rem; height: .7rem; border-radius: 2px; margin-right: .35rem; vertical-align: -1px; }
+.gd .fail { display: flex; align-items: center; justify-content: center; gap: .4rem; min-height: inherit; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+.gd .fail::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); }
+.gd [data-dash-source-state=empty] { color: transparent; }
+.gd [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+</style>
+
+<div class="gd">
+  <header class="gd-head" id="inicio">
+    <h1>Monitor de gandul en conserva</h1>
+    <p class="gd-take" id="takeaway">Tu kilo de vaina se vendió a <b class="dash-skeleton" data-source="resumen" data-field="chacra_pen_kg" data-row="0">—</b>. Convertido en latas, ese mismo kilo vale <b class="dash-skeleton" data-source="resumen" data-field="fob_pen_kg_vaina" data-row="0">—</b> al salir de Paita y <b class="dash-skeleton" data-source="resumen" data-field="gondola_pen_kg_vaina" data-row="0">—</b> en un supermercado de EE. UU. El dinero está en procesar y en vender a quien ya compra: EE. UU., República Dominicana y Puerto Rico.</p>
+  </header>
+
+  <section class="gd-tiles" id="cifras">
+    <div class="gd-card gd-tile"><div class="lbl">Tu precio en chacra</div><div class="num dash-skeleton" data-source="resumen" data-field="chacra_pen_kg" data-row="0">—</div><div class="sub">por kg de vaina verde</div></div>
+    <div class="gd-card gd-tile"><div class="lbl">Ese kilo, en lata FOB</div><div class="num dash-skeleton" data-source="resumen" data-field="fob_pen_kg_vaina" data-row="0">—</div><div class="sub">conservera → Goya, EE. UU.</div></div>
+    <div class="gd-card gd-tile"><div class="lbl">Ese kilo, en góndola</div><div class="num dash-skeleton" data-source="resumen" data-field="gondola_pen_kg_vaina" data-row="0">—</div><div class="sub">lata Goya en Walmart</div></div>
+    <div class="gd-card gd-tile"><div class="lbl">Tu parte del precio FOB</div><div class="num dash-skeleton" data-source="resumen" data-field="part_fob" data-row="0">—</div><div class="sub">lo demás es lata, proceso y margen</div></div>
+  </section>
+
+  <section class="gd-sec" id="mercados">
+    <h2>¿Quién compra y cuánto paga?</h2>
+    <p class="note">Mercados ordenados por prioridad para gandul verde en conserva peruano. "Perú exportó 2025" es el valor FOB de la subpartida según SUNAT; FOB por kg de los embarques de gandul; góndola en US$ por lata de 15 oz.</p>
+    <div class="gd-card"><div class="gd-tbl-wrap">
+      <table id="tbl-ranking" data-source="ranking" data-row-key="mercado">
+        <thead><tr>
+          <th class="n" data-field="prioridad">#</th>
+          <th data-field="mercado">Mercado</th>
+          <th data-field="compra_peru">¿Compra a Perú?</th>
+          <th class="n" data-field="fob_peru_2025">Perú exportó 2025</th>
+          <th class="n" data-field="fob_rango">FOB US$/kg</th>
+          <th class="n" data-field="gondola_rango">Góndola US$/lata</th>
+          <th data-field="importador_ref">Importador de referencia</th>
+          <th data-field="nota">Lectura</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div></div>
+  </section>
+
+  <section class="gd-sec" id="sunat">
+    <h2>Datos oficiales de aduanas (SUNAT)</h2>
+    <p class="note">Subpartida 2005.99.90.00, enero–diciembre de 2025. Agrupa varias hortalizas en conserva, no solo gandul: tómalo como techo del mercado.</p>
+    <div class="gd-grid">
+      <div class="gd-card" id="card-destinos">
+        <h3>Destinos de la exportación peruana</h3>
+        <p class="note">US$ millones FOB, 2025 frente a 2024</p>
+        <div class="legend" id="lg-destinos" data-source="sunat_destinos"></div>
+        <div class="gd-chart dash-skeleton" id="ch-destinos" data-source="sunat_destinos"></div>
+      </div>
+      <div class="gd-card" id="card-exportadoras">
+        <h3>Principales exportadoras</h3>
+        <p class="note">US$ millones FOB y participación en 2025</p>
+        <div class="gd-tbl-wrap">
+          <table id="tbl-exp" data-source="sunat_exportadoras" data-row-key="empresa">
+            <thead><tr><th data-field="empresa">Empresa</th><th class="n" data-field="fob_2024_musd">2024</th><th class="n" data-field="fob_2025_musd">2025</th><th class="n" data-field="part_2025">Part.</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gd-grid">
+    <div class="gd-card" id="card-fob">
+      <h3>Precio FOB por embarque</h3>
+      <p class="note">US$ por kg de conserva, exportaciones peruanas de 2024 (partida 2005.99.90.00)</p>
+      <div class="gd-chart dash-skeleton" id="ch-fob" data-source="fob_conserva"></div>
+    </div>
+    <div class="gd-card" id="card-gondola">
+      <h3>Precio en góndola por lata</h3>
+      <p class="note">US$ por lata, último precio visto en cada tienda (fecha y disponibilidad en el detalle)</p>
+      <div class="legend" id="lg-gondola" data-source="gondola_usd"></div>
+      <div class="gd-chart dash-skeleton" id="ch-gondola" data-source="gondola_usd"></div>
+    </div>
+  </section>
+
+  <section class="gd-sec" id="cadena-sec">
+    <h2>Dónde se queda el dinero de una lata</h2>
+    <p class="note">Una lata de 15 oz rumbo a EE. UU., en US$. Usa los supuestos de rendimiento de abajo.</p>
+    <div class="gd-card"><div class="gd-chart dash-skeleton" id="ch-cadena" data-source="cadena"></div></div>
+  </section>
+
+  <section class="gd-sec" id="conserveras">
+    <h2>Conserveras que ya exportan gandul</h2>
+    <p class="note">Tus compradores directos de vaina, o socios para maquila con marca propia.</p>
+    <div class="gd-card"><div class="gd-tbl-wrap">
+      <table id="tbl-proc" data-source="procesadoras" data-row-key="empresa">
+        <thead><tr><th data-field="empresa">Empresa</th><th data-field="zona">Zona</th><th data-field="clientes">Clientes y destinos</th><th data-field="producto">Producto</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div></div>
+  </section>
+
+  <section class="gd-sec" id="supuestos-sec">
+    <h2>Supuestos del cálculo</h2>
+    <p class="note">Los dos supuestos de rendimiento son estimaciones: pídele a la conservera su dato real y lo actualizo.</p>
+    <div class="gd-card"><div class="gd-tbl-wrap">
+      <table id="tbl-sup" data-source="supuestos" data-row-key="clave">
+        <thead><tr><th data-field="nota">Concepto</th><th class="n" data-field="valor">Valor</th><th data-field="unidad">Unidad</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div></div>
+  </section>
+</div>
+
+<script>
+const S = (sup) => Object.fromEntries(sup.map(r => [r.clave, Number(r.valor)]));
+
+dash.calc('gondola_usd', {
+  title: 'Góndola en US$',
+  description: 'Precio de cada lata pasado a US$ (dírham a tasa fija) y por kg.',
+  inputs: ['precios_gondola', 'supuestos'],
+  fn: (precios_gondola, supuestos) => {
+    const aed = Number(supuestos.find(r => r.clave === 'aed_usd').valor);
+    return precios_gondola.map(r => {
+      const usd = r.moneda === 'AED' ? Number(r.precio_local) / aed : Number(r.precio_local);
+      return { id: r.id, mercado: r.mercado, marca: r.marca, tienda: r.tienda, consultado: r.consultado, estado: r.estado, precio_usd: usd, usd_kg: usd / (Number(r.contenido_g) / 1000) };
+    });
+  }
+});
+
+dash.calc('cadena', {
+  title: 'Cadena de valor por lata',
+  description: 'Costo de la vaina, FOB, flete y góndola para una lata de 15 oz rumbo a EE. UU.',
+  inputs: ['supuestos', 'fob_conserva', 'gondola_usd'],
+  fn: (supuestos, fob_conserva, gondola_usd) => {
+    const s = Object.fromEntries(supuestos.map(r => [r.clave, Number(r.valor)]));
+    const vainaPorLata = s.escurrido_kg / s.rend_grano;
+    const chacra = s.precio_chacra * vainaPorLata / s.tc_pen_usd;
+    const fob = Number(fob_conserva.find(r => r.id === 'us-goya').fob_usd_kg) * s.lata_neto_kg;
+    const latas20 = s.carga_20ft_kg / s.kg_por_caja * 24;
+    const flete = s.flete_20ft_max / latas20;
+    const gondola = gondola_usd.find(r => r.id === 'us-goya-wm').precio_usd;
+    return [
+      { etapa: 'Vaina en chacra', usd_lata: chacra, pen_lata: chacra * s.tc_pen_usd },
+      { etapa: 'Lata FOB Paita', usd_lata: fob, pen_lata: fob * s.tc_pen_usd },
+      { etapa: 'Lata en Florida (+flete)', usd_lata: fob + flete, pen_lata: (fob + flete) * s.tc_pen_usd },
+      { etapa: 'Góndola Walmart', usd_lata: gondola, pen_lata: gondola * s.tc_pen_usd }
+    ];
+  }
+});
+
+dash.calc('resumen', {
+  title: 'Tu kilo de vaina, en lata',
+  description: 'Cuánto vale un kg de vaina convertido en latas, en FOB y en góndola de EE. UU.',
+  inputs: ['supuestos', 'cadena'],
+  fn: (supuestos, cadena) => {
+    const s = Object.fromEntries(supuestos.map(r => [r.clave, Number(r.valor)]));
+    const latasPorKgVaina = s.rend_grano / s.escurrido_kg;
+    const fob = cadena.find(r => r.etapa === 'Lata FOB Paita').pen_lata;
+    const gon = cadena.find(r => r.etapa === 'Góndola Walmart').pen_lata;
+    return [{
+      chacra_pen_kg: s.precio_chacra,
+      fob_pen_kg_vaina: fob * latasPorKgVaina,
+      gondola_pen_kg_vaina: gon * latasPorKgVaina,
+      part_fob: s.precio_chacra / (fob * latasPorKgVaina)
+    }];
+  }
+});
+
+dash.calc('ranking', {
+  title: 'Mercados por prioridad',
+  description: 'Cada mercado con lo que Perú le exportó en 2025 (SUNAT) y sus rangos FOB y de góndola.',
+  inputs: ['mercados', 'fob_conserva', 'gondola_usd', 'sunat_destinos'],
+  fn: (mercados, fob_conserva, gondola_usd, sunat_destinos) => mercados.map(m => {
+    const s = sunat_destinos.find(r => r.mercado === m.sunat);
+    const fob_peru_2025 = s ? 'US$ ' + Number(s.fob_2025_musd).toFixed(2) + ' M' : 'Sin dato';
+    const f = fob_conserva.filter(r => r.mercado === m.mercado).map(r => Number(r.fob_usd_kg));
+    const g = gondola_usd.filter(r => r.mercado === m.mercado).map(r => r.precio_usd);
+    const rango = (a) => a.length === 0 ? 'Sin dato' : (Math.min(...a) === Math.max(...a) ? Math.min(...a).toFixed(2) : Math.min(...a).toFixed(2) + '–' + Math.max(...a).toFixed(2));
+    return { mercado: m.mercado, prioridad: m.prioridad, compra_peru: m.compra_peru, fob_peru_2025, fob_rango: rango(f), gondola_rango: rango(g), importador_ref: m.importador_ref, nota: m.nota };
+  }).sort((a, b) => a.prioridad - b.prioridad)
+});
+
+const soles = (v) => 'S/ ' + d3.format(',.2f')(v);
+const usd2 = d3.format('$.2f');
+
+function fail(el) { d3.select(el).classed('dash-skeleton', false).html('').append('div').attr('class', 'fail').text('No se pudo cargar'); }
+
+function hbar(el, rows, o) {
+  const box = d3.select(el).classed('dash-skeleton', false);
+  box.selectAll('*').remove();
+  const W = Math.max(280, el.clientWidth);
+  const rowH = 34, top = 4, H = rows.length * rowH + top + 6;
+  const svg = box.append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).style('display', 'block');
+  const probe = svg.append('g').attr('font-size', 12);
+  let lw = 0;
+  rows.forEach(r => { const t = probe.append('text').text(o.label(r)); lw = Math.max(lw, t.node().getComputedTextLength()); t.remove(); });
+  let vw = 0;
+  rows.forEach(r => { const t = probe.append('text').text(o.fmt(o.value(r))); vw = Math.max(vw, t.node().getComputedTextLength()); t.remove(); });
+  lw = Math.min(lw, W * 0.45);
+  const x0 = lw + 12, x1 = W - vw - 10;
+  const x = d3.scaleLinear([0, d3.max(rows, o.value) || 1], [x0, x1]);
+  const tip = box.append('div').attr('class', 'tip');
+  const g = svg.selectAll('g.r').data(rows).join('g').attr('class', 'r').attr('transform', (d, i) => `translate(0,${top + i * rowH})`);
+  g.append('text').attr('x', 0).attr('y', rowH / 2).attr('dy', '0.35em').attr('font-size', 12).attr('fill', 'var(--color-fg)').text(o.label)
+    .each(function () { const n = this; let s = n.textContent; while (n.getComputedTextLength() > lw && s.length > 3) { s = s.slice(0, -2); n.textContent = s + '…'; } });
+  g.append('rect').attr('x', x0).attr('y', rowH / 2 - 10).attr('height', 20).attr('rx', 4)
+    .attr('width', d => Math.max(2, x(o.value(d)) - x0)).attr('fill', o.color);
+  g.append('text').attr('x', d => x(o.value(d)) + 6).attr('y', rowH / 2).attr('dy', '0.35em').attr('font-size', 12)
+    .attr('fill', 'var(--color-fg-muted)').style('font-variant-numeric', 'tabular-nums').text(d => o.fmt(o.value(d)));
+  g.on('mousemove', function (ev, d) {
+    const [mx, my] = d3.pointer(ev, el);
+    tip.html('');
+    tip.append('div').attr('class', 't1').text(o.tipHead(d));
+    o.tipLines(d).forEach(l => tip.append('div').text(l));
+    const tw = tip.node().offsetWidth;
+    tip.style('left', Math.min(Math.max(0, mx + 12), el.clientWidth - tw) + 'px').style('top', (my + 12) + 'px').style('opacity', 1);
+    d3.select(this).select('rect').attr('opacity', .8);
+  }).on('mouseleave', function () { tip.style('opacity', 0); d3.select(this).select('rect').attr('opacity', 1); });
+}
+
+function fillTable(id, rows, cols, keyCol) {
+  const tb = d3.select(`#${id} tbody`);
+  tb.selectAll('tr').remove();
+  rows.forEach(r => {
+    const tr = tb.append('tr');
+    if (keyCol) tr.attr('data-key', r[keyCol]);
+    cols.forEach(c => {
+      const td = tr.append('td').attr('class', c.cls || null);
+      if (c.render) c.render(td, r); else td.text(c.fmt ? c.fmt(r[c.f]) : r[c.f]);
+    });
+  });
+}
+
+dash.onData(() => {
+  // resumen
+  const res = dash.data('resumen');
+  document.querySelectorAll('[data-source="resumen"]').forEach(n => {
+    if (res.status === 'ok' && res.data[0]) {
+      n.classList.remove('dash-skeleton');
+      const v = res.data[0][n.dataset.field];
+      n.textContent = n.dataset.field === 'part_fob' ? d3.format('.1%')(v) : soles(v);
+    } else if (res.status === 'error') { n.classList.remove('dash-skeleton'); n.textContent = '—'; }
+    else n.textContent = '—';
+  });
+
+  // ranking
+  const rk = dash.data('ranking');
+  if (rk.status === 'ok') {
+    fillTable('tbl-ranking', rk.data, [
+      { f: 'prioridad', cls: 'n', render: (td, r) => td.append('span').attr('class', 'pill').text(r.prioridad) },
+      { f: 'mercado', render: (td, r) => td.append('b').text(r.mercado) },
+      { f: 'compra_peru', render: (td, r) => td.append('span').attr('class', /^No/.test(r.compra_peru) ? 'no' : 'yes').text(r.compra_peru) },
+      { f: 'fob_peru_2025', cls: 'n' }, { f: 'fob_rango', cls: 'n' }, { f: 'gondola_rango', cls: 'n' },
+      { f: 'importador_ref' }, { f: 'nota' }
+    ]);
+  } else d3.select('#tbl-ranking tbody').selectAll('tr').remove();
+
+  // FOB chart
+  const fob = dash.data('fob_conserva');
+  const elF = document.getElementById('ch-fob');
+  if (fob.status === 'ok') {
+    const rows = fob.data.map(r => ({ ...r, v: Number(r.fob_usd_kg) })).sort((a, b) => b.v - a.v);
+    hbar(elF, rows, {
+      label: r => r.mercado + (r.id === 'pr-105oz' ? ' (institucional)' : r.mercado === 'Panamá' ? (r.id === 'pa-rubi' ? ' (Rubí)' : ' (Golden)') : ''),
+      value: r => r.v, fmt: v => usd2(v) + '/kg',
+      color: r => r.id === 'us-goya' ? dash.colors[0] : 'var(--cds-chart-muted)',
+      tipHead: r => r.mercado + ' · ' + d3.utcFormat('%d/%m/%Y')(new Date(r.fecha)),
+      tipLines: r => [r.exportador + ' → ' + r.importador, r.presentacion, 'FOB ' + usd2(r.v) + ' por kg']
+    });
+  } else if (fob.status === 'error') fail(elF); else { elF.innerHTML = ''; elF.classList.add('dash-skeleton'); }
+
+  // Góndola chart
+  const gd = dash.data('gondola_usd');
+  const elG = document.getElementById('ch-gondola'), lg = d3.select('#lg-gondola');
+  const mcol = { 'EE. UU. continental': dash.colors[0], 'Emiratos Árabes': dash.colors[1] };
+  lg.selectAll('*').remove();
+  if (gd.status === 'ok') {
+    Object.entries(mcol).forEach(([k, c]) => { const s = lg.append('span'); s.append('i').style('background', c); s.append('span').text(k); });
+    const rows = [...gd.data].sort((a, b) => b.precio_usd - a.precio_usd);
+    hbar(elG, rows, {
+      label: r => r.marca + ' · ' + r.tienda + (/^Agotado/.test(r.estado) ? ' (agotado)' : ''), value: r => r.precio_usd, fmt: usd2,
+      color: r => mcol[r.mercado], tipHead: r => r.mercado,
+      tipLines: r => [r.marca + ' en ' + r.tienda, usd2(r.precio_usd) + ' por lata', usd2(r.usd_kg) + ' por kg', 'Precio visto el ' + d3.utcFormat('%d/%m/%Y')(new Date(r.consultado)) + ' · ' + r.estado]
+    });
+  } else if (gd.status === 'error') fail(elG); else { elG.innerHTML = ''; elG.classList.add('dash-skeleton'); }
+
+  // SUNAT destinos: 2025 bar with 2024 marker
+  const sd = dash.data('sunat_destinos');
+  const elD = document.getElementById('ch-destinos'), lgD = d3.select('#lg-destinos');
+  lgD.selectAll('*').remove();
+  if (sd.status === 'ok') {
+    const a = lgD.append('span'); a.append('i').style('background', dash.colors[0]); a.append('span').text('2025');
+    const b = lgD.append('span'); b.append('i').style('background', 'var(--color-fg-muted)').style('height', '3px').style('vertical-align', '3px'); b.append('span').text('2024');
+    const rows = sd.data.filter(r => r.mercado !== 'Otros países').map(r => ({ ...r, v: Number(r.fob_2025_musd), p: Number(r.fob_2024_musd) })).sort((x, y) => y.v - x.v);
+    hbar(elD, rows, {
+      label: r => r.mercado, value: r => Math.max(r.v, r.p), fmt: v => 'US$ ' + d3.format('.1f')(v) + ' M',
+      color: () => dash.colors[0],
+      tipHead: r => r.mercado,
+      tipLines: r => ['2025: US$ ' + d3.format('.2f')(r.v) + ' M (' + d3.format('.1%')(Number(r.part_2025)) + ')', '2024: US$ ' + d3.format('.2f')(r.p) + ' M', 'Variación: ' + (r.p > 0 ? d3.format('+.0%')(r.v / r.p - 1) : '—')]
+    });
+    // redraw bars to 2025 value and add 2024 tick
+    const svg = d3.select(elD).select('svg');
+    const W = Math.max(280, elD.clientWidth);
+    const rects = svg.selectAll('g.r rect').nodes();
+    if (rects.length) {
+      const x0 = Number(rects[0].getAttribute('x'));
+      const maxV = d3.max(rows, r => Math.max(r.v, r.p));
+      const ref = rows.find(r => Math.max(r.v, r.p) === maxV);
+      const refIdx = rows.indexOf(ref);
+      const pxPer = Number(rects[refIdx].getAttribute('width')) / maxV;
+      svg.selectAll('g.r').each(function (d) {
+        const g = d3.select(this);
+        g.select('rect').attr('width', Math.max(2, d.v * pxPer));
+        g.append('line').attr('x1', x0 + d.p * pxPer).attr('x2', x0 + d.p * pxPer).attr('y1', 34 / 2 - 13).attr('y2', 34 / 2 + 13)
+          .attr('stroke', 'var(--color-fg-muted)').attr('stroke-width', 3).attr('stroke-linecap', 'round');
+        g.selectAll('text').filter((_, i) => i === 1).text('US$ ' + d3.format('.1f')(d.v) + ' M');
+      });
+    }
+  } else if (sd.status === 'error') fail(elD); else { elD.innerHTML = ''; elD.classList.add('dash-skeleton'); }
+
+  // SUNAT exportadoras
+  const se = dash.data('sunat_exportadoras');
+  if (se.status === 'ok') fillTable('tbl-exp', se.data, [
+    { f: 'empresa' },
+    { f: 'fob_2024_musd', cls: 'n', fmt: v => d3.format('.2f')(Number(v)) },
+    { f: 'fob_2025_musd', cls: 'n', fmt: v => d3.format('.2f')(Number(v)) },
+    { f: 'part_2025', cls: 'n', fmt: v => d3.format('.1%')(Number(v)) }
+  ]); else d3.select('#tbl-exp tbody').selectAll('tr').remove();
+
+  // Cadena
+  const cd = dash.data('cadena');
+  const elC = document.getElementById('ch-cadena');
+  if (cd.status === 'ok') {
+    const last = cd.data[cd.data.length - 1].usd_lata;
+    hbar(elC, cd.data, {
+      label: r => r.etapa, value: r => r.usd_lata,
+      fmt: v => usd2(v) + ' · ' + d3.format('.0%')(v / last),
+      color: r => r.etapa === 'Vaina en chacra' ? dash.colors[0] : 'var(--cds-chart-muted)',
+      tipHead: r => r.etapa,
+      tipLines: r => [usd2(r.usd_lata) + ' por lata', soles(r.pen_lata) + ' por lata', d3.format('.0%')(r.usd_lata / last) + ' del precio en góndola']
+    });
+  } else if (cd.status === 'error') fail(elC); else { elC.innerHTML = ''; elC.classList.add('dash-skeleton'); }
+
+  // Conserveras
+  const pr = dash.data('procesadoras');
+  if (pr.status === 'ok') fillTable('tbl-proc', pr.data, [
+    { f: 'empresa', render: (td, r) => td.append('b').text(r.empresa) }, { f: 'zona' }, { f: 'clientes' }, { f: 'producto' }
+  ]); else d3.select('#tbl-proc tbody').selectAll('tr').remove();
+
+  // Supuestos
+  const sp = dash.data('supuestos');
+  if (sp.status === 'ok') fillTable('tbl-sup', sp.data, [
+    { f: 'nota' }, { f: 'valor', cls: 'n', fmt: v => d3.format(',')(Number(v)) }, { f: 'unidad' }
+  ], 'clave'); else d3.select('#tbl-sup tbody').selectAll('tr').remove();
+});
+</script>
+
+<footer class="gd-pie" id="pie">
+  <div><b>Fuentes y fecha de actualización</b></div>
+  <ul id="pie-fuentes"></ul>
+  <div>Datos públicos reunidos por Audit Smarkt Hub. Precios de góndola y FOB son referencias, no cotizaciones.</div>
+</footer>
+<script>
+fetch('meta.json', { cache: 'no-cache' }).then(r => r.json()).then(m => {
+  const ul = document.getElementById('pie-fuentes');
+  m.fuentes.forEach(f => { const li = document.createElement('li'); const a = document.createElement('a');
+    a.href = f.id + '.json'; a.textContent = f.titulo; li.appendChild(a);
+    li.appendChild(document.createTextNode(' · actualizado ' + f.actualizado)); ul.appendChild(li); });
+}).catch(() => {});
+</script>
+</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+[
+ {
+  "mercado": "EE. UU. continental",
+  "sunat": "Estados Unidos",
+  "prioridad": 1,
+  "compra_peru": "Sí, recurrente",
+  "importador_ref": "Goya Foods (Florida, Texas, California), Roland Foods",
+  "nota": "El mercado más grande y el mejor FOB visto. Goya sigue recibiendo embarques peruanos por Paita en julio de 2026."
+ },
+ {
+  "mercado": "República Dominicana",
+  "sunat": "República Dominicana",
+  "prioridad": 2,
+  "compra_peru": "Sí, recurrente",
+  "importador_ref": "Goya Santo Domingo",
+  "nota": "Segundo destino de la subpartida según SUNAT. Gran consumo de gandul (moro de guandules)."
+ },
+ {
+  "mercado": "Puerto Rico",
+  "sunat": "Puerto Rico",
+  "prioridad": 3,
+  "compra_peru": "Sí",
+  "importador_ref": "José Santiago Inc.",
+  "nota": "Consumo masivo (arroz con gandules). Paga algo menos que EE. UU. continental y compra formato institucional."
+ },
+ {
+  "mercado": "Panamá",
+  "sunat": "Panamá",
+  "prioridad": 4,
+  "compra_peru": "Sí",
+  "importador_ref": "Corporación Internacional de Alimentos",
+  "nota": "Entrada con marca propia del importador (Rubí, Golden Selection). FOB intermedio."
+ },
+ {
+  "mercado": "Trinidad y Tobago",
+  "sunat": "Trinidad y Tobago",
+  "prioridad": 5,
+  "compra_peru": "Sí",
+  "importador_ref": "—",
+  "nota": "Mercado caribeño en crecimiento según SUNAT (+51% en 2025)."
+ },
+ {
+  "mercado": "Europa (España, Reino Unido, Francia)",
+  "sunat": "España",
+  "prioridad": 6,
+  "compra_peru": "Sí, en menor escala",
+  "importador_ref": "Goya en España; distribuidores étnicos",
+  "nota": "España creció fuerte en 2025. El Reino Unido es el mayor mercado europeo de gandul."
+ },
+ {
+  "mercado": "Canadá y Caribe",
+  "sunat": "Canadá",
+  "prioridad": 7,
+  "compra_peru": "Sí (declarado)",
+  "importador_ref": "Clientes de Alpes Chiclayo; Supervalue Food Stores",
+  "nota": "Destinos que declaran las conserveras de Lambayeque. Volúmenes pequeños."
+ },
+ {
+  "mercado": "Emiratos Árabes",
+  "sunat": "",
+  "prioridad": 8,
+  "compra_peru": "No encontrada",
+  "importador_ref": "—",
+  "nota": "No figura entre los destinos de SUNAT. Hay latas en góndola, pero allí manda el grano seco (toor dal) indio."
+ }
+]

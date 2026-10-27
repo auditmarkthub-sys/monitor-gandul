@@ -1,0 +1,52 @@
+[
+ {
+  "id": "us-goya",
+  "mercado": "EE. UU. continental",
+  "exportador": "Servicios Procesadora Perú SAC",
+  "importador": "Goya Foods",
+  "presentacion": "Caja 24 latas x 15 oz",
+  "fob_usd_kg": 1.75,
+  "fecha": "2024-10-11",
+  "fuente": "https://www.veritradecorp.com/es/peru/importaciones-y-exportaciones-servicios-procesadora-peru-sac/ruc-20480636164"
+ },
+ {
+  "id": "pr-15oz",
+  "mercado": "Puerto Rico",
+  "exportador": "V & F SAC",
+  "importador": "José Santiago Inc.",
+  "presentacion": "Caja 24 latas x 15 oz",
+  "fob_usd_kg": 1.666,
+  "fecha": "2024-03-17",
+  "fuente": "https://www.veritradecorp.com/es/peru/importaciones-y-exportaciones-v--f-sac/ruc-20480319860"
+ },
+ {
+  "id": "pr-105oz",
+  "mercado": "Puerto Rico",
+  "exportador": "V & F SAC",
+  "importador": "José Santiago Inc.",
+  "presentacion": "Caja 6 latas x 105 oz (institucional)",
+  "fob_usd_kg": 1.259,
+  "fecha": "2024-03-17",
+  "fuente": "https://www.veritradecorp.com/es/peru/importaciones-y-exportaciones-v--f-sac/ruc-20480319860"
+ },
+ {
+  "id": "pa-rubi",
+  "mercado": "Panamá",
+  "exportador": "Alpes Chiclayo SAC",
+  "importador": "Corporación Internacional de Alimentos",
+  "presentacion": "Caja 24 latas x 15 oz (marca Rubí)",
+  "fob_usd_kg": 1.446,
+  "fecha": "2024-03-15",
+  "fuente": "https://www.veritradecorp.com/es/peru/importaciones-y-exportaciones-alpes-chiclayo-sac/ruc-20479735892"
+ },
+ {
+  "id": "pa-golden",
+  "mercado": "Panamá",
+  "exportador": "Alpes Chiclayo SAC",
+  "importador": "—",
+  "presentacion": "Latas 15 oz (marca Golden Selection)",
+  "fob_usd_kg": 1.49,
+  "fecha": "2024-07-22",
+  "fuente": "https://www.veritradecorp.com/es/peru/importaciones-y-exportaciones-alpes-chiclayo-sac/ruc-20479735892"
+ }
+]
