@@ -1,5 +1,18 @@
 [
  {
+  "id": "us-goya-cong-heb",
+  "producto": "Congelado",
+  "mercado": "EE. UU. continental",
+  "marca": "Goya",
+  "tienda": "H-E-B",
+  "contenido_g": 397,
+  "precio_local": 3.58,
+  "moneda": "USD",
+  "consultado": "2026-10-27",
+  "estado": "Disponible",
+  "fuente": "https://heb.com/product-detail/goya-pigeon-peas/129153"
+ },
+ {
   "id": "us-goya-wm",
   "mercado": "EE. UU. continental",
   "marca": "Goya",
@@ -9,7 +22,8 @@
   "moneda": "USD",
   "consultado": "2026-10-26",
   "estado": "Disponible",
-  "fuente": "https://www.walmart.com/ip/34108331"
+  "fuente": "https://www.walmart.com/ip/34108331",
+  "producto": "Conserva"
  },
  {
   "id": "us-goya-heb",
@@ -21,7 +35,8 @@
   "moneda": "USD",
   "consultado": "2026-10-26",
   "estado": "Disponible",
-  "fuente": "https://www.heb.com/product-detail/goya-green-pigeon-peas/129189"
+  "fuente": "https://www.heb.com/product-detail/goya-green-pigeon-peas/129189",
+  "producto": "Conserva"
  },
  {
   "id": "us-goya-coco",
@@ -33,7 +48,8 @@
   "moneda": "USD",
   "consultado": "2026-10-26",
   "estado": "Disponible",
-  "fuente": "https://www.walmart.com/ip/Premium-Green-Pigeon-Peas-Pack-of-20/352063726"
+  "fuente": "https://www.walmart.com/ip/Premium-Green-Pigeon-Peas-Pack-of-20/352063726",
+  "producto": "Conserva"
  },
  {
   "id": "us-iberia",
@@ -45,7 +61,8 @@
   "moneda": "USD",
   "consultado": "2026-10-16",
   "estado": "Sin precio nuevo",
-  "fuente": "https://walmart.com/ip/seort/34108331"
+  "fuente": "https://walmart.com/ip/seort/34108331",
+  "producto": "Conserva"
  },
  {
   "id": "us-goya-prime",
@@ -57,7 +74,8 @@
   "moneda": "USD",
   "consultado": "2026-10-26",
   "estado": "Agotado",
-  "fuente": "https://www.walmart.com/ip/151064185"
+  "fuente": "https://www.walmart.com/ip/151064185",
+  "producto": "Conserva"
  },
  {
   "id": "ae-seaisle",
@@ -69,7 +87,8 @@
   "moneda": "AED",
   "consultado": "2026-10-16",
   "estado": "Sin precio nuevo",
-  "fuente": "https://www.carrefouruae.com/mafuae/en/root-maf-category/food-navigation-category/food-cupboard/tins-jars-packets/canned-vegetables/other-vegetables/sea-isle-canned-pigeon-peas-425g/p/1601692"
+  "fuente": "https://www.carrefouruae.com/mafuae/en/root-maf-category/food-navigation-category/food-cupboard/tins-jars-packets/canned-vegetables/other-vegetables/sea-isle-canned-pigeon-peas-425g/p/1601692",
+  "producto": "Conserva"
  },
  {
   "id": "ae-goya",
@@ -81,6 +100,7 @@
   "moneda": "AED",
   "consultado": "2026-10-16",
   "estado": "Sin precio nuevo",
-  "fuente": "https://www.amazon.ae/pigeon-peas/s?k=pigeon+peas"
+  "fuente": "https://www.amazon.ae/pigeon-peas/s?k=pigeon+peas",
+  "producto": "Conserva"
  }
 ]

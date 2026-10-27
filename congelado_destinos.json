@@ -1,0 +1,82 @@
+[
+ {
+  "mercado": "Estados Unidos",
+  "fob_2025_musd": 10.1,
+  "fob_2024_musd": 9.83,
+  "fob_ea2026_musd": 4.6,
+  "fob_ea2025_musd": 4.97,
+  "part_2025": 0.7038
+ },
+ {
+  "mercado": "Francia",
+  "fob_2025_musd": 1.33,
+  "fob_2024_musd": 1.28,
+  "fob_ea2026_musd": 0.14,
+  "fob_ea2025_musd": 0.5,
+  "part_2025": 0.0927
+ },
+ {
+  "mercado": "Canadá",
+  "fob_2025_musd": 0.62,
+  "fob_2024_musd": 0.38,
+  "fob_ea2026_musd": 0.2,
+  "fob_ea2025_musd": 0.27,
+  "part_2025": 0.0432
+ },
+ {
+  "mercado": "Guadalupe",
+  "fob_2025_musd": 0.49,
+  "fob_2024_musd": 0.45,
+  "fob_ea2026_musd": 0.0,
+  "fob_ea2025_musd": 0.22,
+  "part_2025": 0.0341
+ },
+ {
+  "mercado": "Trinidad y Tobago",
+  "fob_2025_musd": 0.43,
+  "fob_2024_musd": 0.23,
+  "fob_ea2026_musd": 0.24,
+  "fob_ea2025_musd": 0.23,
+  "part_2025": 0.03
+ },
+ {
+  "mercado": "Reino Unido",
+  "fob_2025_musd": 0.38,
+  "fob_2024_musd": 0.21,
+  "fob_ea2026_musd": 0.05,
+  "fob_ea2025_musd": 0.19,
+  "part_2025": 0.0265
+ },
+ {
+  "mercado": "Puerto Rico",
+  "fob_2025_musd": 0.27,
+  "fob_2024_musd": 0.17,
+  "fob_ea2026_musd": 0.05,
+  "fob_ea2025_musd": 0.09,
+  "part_2025": 0.0188
+ },
+ {
+  "mercado": "Martinica",
+  "fob_2025_musd": 0.27,
+  "fob_2024_musd": 0.14,
+  "fob_ea2026_musd": null,
+  "fob_ea2025_musd": null,
+  "part_2025": 0.0188
+ },
+ {
+  "mercado": "Panamá",
+  "fob_2025_musd": 0.2,
+  "fob_2024_musd": 0.04,
+  "fob_ea2026_musd": 0.11,
+  "fob_ea2025_musd": 0.12,
+  "part_2025": 0.0139
+ },
+ {
+  "mercado": "Guyana Francesa",
+  "fob_2025_musd": 0.15,
+  "fob_2024_musd": 0.36,
+  "fob_ea2026_musd": 0.0,
+  "fob_ea2025_musd": 0.09,
+  "part_2025": 0.0105
+ }
+]

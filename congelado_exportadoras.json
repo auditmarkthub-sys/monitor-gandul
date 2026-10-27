@@ -1,0 +1,26 @@
+[
+ {
+  "empresa": "Procesadora Perú S.A.C.",
+  "fob_2024_musd": 5.92,
+  "fob_2025_musd": 7.06,
+  "fob_ea2025_musd": 3.45,
+  "fob_ea2026_musd": 1.15,
+  "part_2025": 0.492
+ },
+ {
+  "empresa": "V & F S.A.C.",
+  "fob_2024_musd": 6.71,
+  "fob_2025_musd": 6.67,
+  "fob_ea2025_musd": 3.24,
+  "fob_ea2026_musd": 3.8,
+  "part_2025": 0.4648
+ },
+ {
+  "empresa": "Agroindustrias AIB S.A.",
+  "fob_2024_musd": 0.64,
+  "fob_2025_musd": 0.59,
+  "fob_ea2025_musd": 0.12,
+  "fob_ea2026_musd": 0.3,
+  "part_2025": 0.0411
+ }
+]

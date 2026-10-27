@@ -1,0 +1,30 @@
+[
+ {
+  "periodo": "2024",
+  "fob_musd": 13.33,
+  "toneladas": 6276,
+  "usd_kg": 2.13,
+  "nota": "Calculado a partir de la variación 2025/2024 publicada"
+ },
+ {
+  "periodo": "2025",
+  "fob_musd": 14.35,
+  "toneladas": 6562,
+  "usd_kg": 2.19,
+  "nota": "Enero–diciembre"
+ },
+ {
+  "periodo": "Ene–ago 2025",
+  "fob_musd": 6.83,
+  "toneladas": 3033,
+  "usd_kg": 2.25,
+  "nota": "Calculado a partir de la variación 2026/2025 publicada"
+ },
+ {
+  "periodo": "Ene–ago 2026",
+  "fob_musd": 5.39,
+  "toneladas": 2527,
+  "usd_kg": 2.13,
+  "nota": "Enero–agosto"
+ }
+]
